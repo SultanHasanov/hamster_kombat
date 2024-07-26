@@ -9,7 +9,7 @@ import Friends from './icons/Friends';
 import Coins from './icons/Coins';
 
 const App: React.FC = () => {
-
+const [username, setUsername] = useState("");
 
   useEffect(() => {
     if (window.Telegram.WebApp.initDataUnsafe) {
@@ -150,7 +150,7 @@ const App: React.FC = () => {
               <Hamster size={24} className="text-[#d4d4d4]" />
             </div>
             <div>
-              <p className="text-sm">Sultan</p>
+              <p className="text-sm"> {username}Sultan</p>
             </div>
           </div>
           <div className="flex items-center justify-between space-x-4 mt-1">
