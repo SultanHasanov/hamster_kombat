@@ -9,6 +9,17 @@ import Friends from './icons/Friends';
 import Coins from './icons/Coins';
 
 const App: React.FC = () => {
+
+
+  useEffect(() => {
+    if (window.Telegram.WebApp.initDataUnsafe) {
+      const user = window.Telegram.WebApp.initDataUnsafe.user;
+      if (user) {
+        setUsername(user.username);
+      }
+    }
+  }, []);
+
   const levelNames = [
     "Bronze",    // From 0 to 4999 coins
     "Silver",    // From 5000 coins to 24,999 coins
@@ -139,7 +150,7 @@ const App: React.FC = () => {
               <Hamster size={24} className="text-[#d4d4d4]" />
             </div>
             <div>
-              <p className="text-sm">Sultan (CEO)</p>
+              <p className="text-sm">Sultan</p>
             </div>
           </div>
           <div className="flex items-center justify-between space-x-4 mt-1">
