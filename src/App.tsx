@@ -26,7 +26,7 @@ interface UserData {
 
 const App: React.FC = () => {
 const [userData, setUserData] = useState<UserData | null>(null);
-console.log(userData);
+console.log(WebApp.initDataUnsafe);
 
 useEffect(() => {
   if (WebApp.initDataUnsafe.user) {
