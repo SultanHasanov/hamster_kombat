@@ -1,3 +1,10 @@
+'use client'
+
+import WebApp from '@twa-dev/sdk'
+
+
+
+
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import Hamster from './icons/Hamster';
@@ -8,7 +15,24 @@ import Mine from './icons/Mine';
 import Friends from './icons/Friends';
 import Coins from './icons/Coins';
 
+interface UserData {
+  id: number;
+  first_name: string;
+  last_name?: string;
+  username?: string;
+  language_code: string;
+  is_premium?: boolean;
+}
+
 const App: React.FC = () => {
+const [userData, setUserData] = useState<UserData | null>(null);
+
+useEffect(() => {
+  if (WebApp.initDataUnsafe.user) {
+    setUserData(WebApp.initDataUnsafe.user as UserData);
+  }
+}, []);
+
   const levelNames = [
     "Bronze",    // From 0 to 4999 coins
     "Silver",    // From 5000 coins to 24,999 coins
@@ -139,7 +163,9 @@ const App: React.FC = () => {
               <Hamster size={24} className="text-[#d4d4d4]" />
             </div>
             <div>
-              <p className="text-sm">Sultan (CEO)</p>
+              <p className="text-sm">
+                {userData ? userData.username : "Guest"} (CEO)
+              </p>
             </div>
           </div>
           <div className="flex items-center justify-between space-x-4 mt-1">
@@ -147,11 +173,19 @@ const App: React.FC = () => {
               <div className="w-full">
                 <div className="flex justify-between">
                   <p className="text-sm">{levelNames[levelIndex]}</p>
-                  <p className="text-sm">{levelIndex + 1} <span className="text-[#95908a]">/ {levelNames.length}</span></p>
+                  <p className="text-sm">
+                    {levelIndex + 1}{" "}
+                    <span className="text-[#95908a]">
+                      / {levelNames.length}
+                    </span>
+                  </p>
                 </div>
                 <div className="flex items-center mt-1 border-2 border-[#43433b] rounded-full">
                   <div className="w-full h-2 bg-[#43433b]/[0.6] rounded-full">
-                    <div className="progress-gradient h-2 rounded-full" style={{ width: `${calculateProgress()}%` }}></div>
+                    <div
+                      className="progress-gradient h-2 rounded-full"
+                      style={{ width: `${calculateProgress()}%` }}
+                    ></div>
                   </div>
                 </div>
               </div>
@@ -160,10 +194,18 @@ const App: React.FC = () => {
               <img src={binanceLogo} alt="Exchange" className="w-8 h-8" />
               <div className="h-[32px] w-[2px] bg-[#43433b] mx-2"></div>
               <div className="flex-1 text-center">
-                <p className="text-xs text-[#85827d] font-medium">Прибыль в час</p>
+                <p className="text-xs text-[#85827d] font-medium">
+                  Прибыль в час
+                </p>
                 <div className="flex items-center justify-center space-x-1">
-                  <img src={dollarCoin} alt="Dollar Coin" className="w-[18px] h-[18px]" />
-                  <p className="text-sm">{formatProfitPerHour(profitPerHour)}</p>
+                  <img
+                    src={dollarCoin}
+                    alt="Dollar Coin"
+                    className="w-[18px] h-[18px]"
+                  />
+                  <p className="text-sm">
+                    {formatProfitPerHour(profitPerHour)}
+                  </p>
                   <Info size={20} className="text-[#43433b]" />
                 </div>
               </div>
@@ -178,21 +220,45 @@ const App: React.FC = () => {
             <div className="px-4 mt-6 flex justify-between gap-2">
               <div className="bg-[#272a2f] rounded-lg px-4 py-2 w-full relative">
                 <div className="dot"></div>
-                <img src={dailyReward} alt="Daily Reward" className="mx-auto w-12 h-12" />
-                <p className="text-[10px] text-center text-white mt-1">Daily reward</p>
-                <p className="text-[10px] font-medium text-center text-gray-400 mt-2">{dailyRewardTimeLeft}</p>
+                <img
+                  src={dailyReward}
+                  alt="Daily Reward"
+                  className="mx-auto w-12 h-12"
+                />
+                <p className="text-[10px] text-center text-white mt-1">
+                  Daily reward
+                </p>
+                <p className="text-[10px] font-medium text-center text-gray-400 mt-2">
+                  {dailyRewardTimeLeft}
+                </p>
               </div>
               <div className="bg-[#272a2f] rounded-lg px-4 py-2 w-full relative">
                 <div className="dot"></div>
-                <img src={dailyCipher} alt="Daily Cipher" className="mx-auto w-12 h-12" />
-                <p className="text-[10px] text-center text-white mt-1">Daily cipher</p>
-                <p className="text-[10px] font-medium text-center text-gray-400 mt-2">{dailyCipherTimeLeft}</p>
+                <img
+                  src={dailyCipher}
+                  alt="Daily Cipher"
+                  className="mx-auto w-12 h-12"
+                />
+                <p className="text-[10px] text-center text-white mt-1">
+                  Daily cipher
+                </p>
+                <p className="text-[10px] font-medium text-center text-gray-400 mt-2">
+                  {dailyCipherTimeLeft}
+                </p>
               </div>
               <div className="bg-[#272a2f] rounded-lg px-4 py-2 w-full relative">
                 <div className="dot"></div>
-                <img src={dailyCombo} alt="Daily Combo" className="mx-auto w-12 h-12" />
-                <p className="text-[10px] text-center text-white mt-1">Daily combo</p>
-                <p className="text-[10px] font-medium text-center text-gray-400 mt-2">{dailyComboTimeLeft}</p>
+                <img
+                  src={dailyCombo}
+                  alt="Daily Combo"
+                  className="mx-auto w-12 h-12"
+                />
+                <p className="text-[10px] text-center text-white mt-1">
+                  Daily combo
+                </p>
+                <p className="text-[10px] font-medium text-center text-gray-400 mt-2">
+                  {dailyComboTimeLeft}
+                </p>
               </div>
             </div>
 
@@ -209,7 +275,11 @@ const App: React.FC = () => {
                 onClick={handleCardClick}
               >
                 <div className="w-full h-full rounded-full circle-inner">
-                  <img src={mainCharacter} alt="Main Character" className="w-full h-full" />
+                  <img
+                    src={mainCharacter}
+                    alt="Main Character"
+                    className="w-full h-full"
+                  />
                 </div>
               </div>
             </div>
@@ -248,7 +318,7 @@ const App: React.FC = () => {
           style={{
             top: `${click.y - 42}px`,
             left: `${click.x - 28}px`,
-            animation: `float 1s ease-out`
+            animation: `float 1s ease-out`,
           }}
           onAnimationEnd={() => handleAnimationEnd(click.id)}
         >
