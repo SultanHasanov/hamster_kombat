@@ -28,31 +28,31 @@ interface UserData {
   is_premium?: boolean;
 }
 
-  const levelNames = [
-    "Bronze", // From 0 to 4999 coins
-    "Silver", // From 5000 coins to 24,999 coins
-    "Gold", // From 25,000 coins to 99,999 coins
-    "Platinum", // From 100,000 coins to 999,999 coins
-    "Diamond", // From 1,000,000 coins to 2,000,000 coins
-    "Epic", // From 2,000,000 coins to 10,000,000 coins
-    "Legendary", // From 10,000,000 coins to 50,000,000 coins
-    "Master", // From 50,000,000 coins to 100,000,000 coins
-    "GrandMaster", // From 100,000,000 coins to 1,000,000,000 coins
-    "Lord", // From 1,000,000,000 coins to ∞
-  ];
+const levelNames = [
+  "Bronze", // From 0 to 4999 coins
+  "Silver", // From 5000 coins to 24,999 coins
+  "Gold", // From 25,000 coins to 99,999 coins
+  "Platinum", // From 100,000 coins to 999,999 coins
+  "Diamond", // From 1,000,000 coins to 2,000,000 coins
+  "Epic", // From 2,000,000 coins to 10,000,000 coins
+  "Legendary", // From 10,000,000 coins to 50,000,000 coins
+  "Master", // From 50,000,000 coins to 100,000,000 coins
+  "GrandMaster", // From 100,000,000 coins to 1,000,000,000 coins
+  "Lord", // From 1,000,000,000 coins to ∞
+];
 
-  const levelMinPoints = [
-    0, // Bronze
-    5000, // Silver
-    25000, // Gold
-    100000, // Platinum
-    1000000, // Diamond
-    2000000, // Epic
-    10000000, // Legendary
-    50000000, // Master
-    100000000, // GrandMaster
-    1000000000, // Lord
-  ];
+const levelMinPoints = [
+  0, // Bronze
+  5000, // Silver
+  25000, // Gold
+  100000, // Platinum
+  1000000, // Diamond
+  2000000, // Epic
+  10000000, // Legendary
+  50000000, // Master
+  100000000, // GrandMaster
+  1000000000, // Lord
+];
 
 const App: React.FC = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
@@ -61,7 +61,7 @@ const App: React.FC = () => {
   const [clicks, setClicks] = useState<{ id: number; x: number; y: number }[]>(
     []
   );
-  const pointsToAdd = 10000000;
+  // const pointsToAdd = 10000000;
   const profitPerHour = 126420;
 
   const [dailyRewardTimeLeft, setDailyRewardTimeLeft] = useState("");
@@ -73,6 +73,7 @@ const App: React.FC = () => {
       setUserData(WebApp.initDataUnsafe.user as UserData);
     }
   }, []);
+
   const calculateTimeLeft = (hours: number) => {
     const now = new Date();
     const nextTarget = new Date();
@@ -99,22 +100,21 @@ const App: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  
-  const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    const card = e.currentTarget;
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
-    card.style.transform = `perspective(1000px) rotateX(${
-      -y / 10
-    }deg) rotateY(${x / 10}deg)`;
-    setTimeout(() => {
-      card.style.transform = "";
-    }, 100);
+  // const handleCardClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  //   const card = e.currentTarget;
+  //   const rect = card.getBoundingClientRect();
+  //   const x = e.clientX - rect.left - rect.width / 2;
+  //   const y = e.clientY - rect.top - rect.height / 2;
+  //   card.style.transform = `perspective(1000px) rotateX(${
+  //     -y / 10
+  //   }deg) rotateY(${x / 10}deg)`;
+  //   setTimeout(() => {
+  //     card.style.transform = "";
+  //   }, 100);
 
-    setPoints(points + pointsToAdd);
-    setClicks([...clicks, { id: Date.now(), x: e.pageX, y: e.pageY }]);
-  };
+  //   setPoints(points + pointsToAdd);
+  //   setClicks([...clicks, { id: Date.now(), x: e.pageX, y: e.pageY }]);
+  // };
 
   const handleAnimationEnd = (id: number) => {
     setClicks((prevClicks) => prevClicks.filter((click) => click.id !== id));
@@ -139,7 +139,7 @@ const App: React.FC = () => {
     } else if (points < currentLevelMin && levelIndex > 0) {
       setLevelIndex(levelIndex - 1);
     }
-  }, [points, levelIndex, levelMinPoints, levelNames.length]);
+  }, [points, levelIndex]);
 
   const formatProfitPerHour = (profit: number) => {
     if (profit >= 1000000000) return `+${(profit / 1000000000).toFixed(2)}B`;
@@ -156,9 +156,8 @@ const App: React.FC = () => {
     return () => clearInterval(interval);
   }, [profitPerHour]);
 
-  // Debounce function
   const debounce = (func: () => void, delay: number) => {
-    let timerId: NodeJS.Timeout;
+    let timerId: ReturnType<typeof setTimeout>;
     return () => {
       if (timerId) {
         clearTimeout(timerId);
@@ -167,7 +166,6 @@ const App: React.FC = () => {
     };
   };
 
-  // Function to save points to API
   const savePointsToAPI = async () => {
     if (userData) {
       const { first_name, username } = userData;
@@ -190,7 +188,6 @@ const App: React.FC = () => {
     }
   };
 
-  // Debounced save function
   const debouncedSavePoints = useCallback(debounce(savePointsToAPI, 300), [
     points,
     userData,
