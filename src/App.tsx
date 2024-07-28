@@ -27,9 +27,11 @@ interface UserData {
 const App: React.FC = () => {
 const [userData, setUserData] = useState<UserData | null>(null);
 
+
 useEffect(() => {
   if (WebApp.initDataUnsafe.user) {
     setUserData(WebApp.initDataUnsafe.user as UserData);
+
   }
 }, []);
 
@@ -164,7 +166,7 @@ useEffect(() => {
             </div>
             <div>
               <p className="text-sm">
-                {userData ? userData.username : "Guest"} (CEO)
+                {userData ? userData.first_name : "Guest"} (CEO)
               </p>
             </div>
           </div>
