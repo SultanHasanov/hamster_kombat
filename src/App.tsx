@@ -46,7 +46,7 @@ declare global {
   }
 }
 
-window.Telegram.WebAppUser
+window.Telegram.WebApp
 const App: React.FC = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
  
