@@ -1,13 +1,10 @@
-'use client'
+"use client";
 
-import WebApp from '@twa-dev/sdk'
+import WebApp from "@twa-dev/sdk";
 
-
-
-
-import React, { useState, useEffect } from 'react';
-import './App.css';
-import Hamster from './icons/Hamster';
+import React, { useState, useEffect } from "react";
+import "./App.css";
+import Hamster from "./icons/Hamster";
 import {
   binanceLogo,
   dailyCipher,
@@ -27,33 +24,33 @@ import {
   j,
   k,
 } from "./images";
-import Info from './icons/Info';
-import Settings from './icons/Settings';
+import Info from "./icons/Info";
+import Settings from "./icons/Settings";
 // import Mine from './icons/Mine';
 // import Friends from './icons/Friends';
 // import Coins from './icons/Coins';
 
 interface UserData {
   id: number;
+  is_bot?: boolean;
   first_name: string;
   last_name?: string;
   username?: string;
-  language_code: string;
+  language_code?: string;
   is_premium?: boolean;
-  photo_url: string;
+  photo_url?: string;
 }
 
 const App: React.FC = () => {
-const [userData, setUserData] = useState<UserData | null>(null);
-console.log(WebApp.initDataUnsafe);
+  const [userData, setUserData] = useState<UserData | null>(null);
+  console.log(WebApp.initDataUnsafe);
 
-useEffect(() => {
-  if (WebApp.initDataUnsafe.user) {
-    setUserData(WebApp.initDataUnsafe.user as UserData);
-console.log(userData?.photo_url);
-
-  }
-}, []);
+  useEffect(() => {
+    if (WebApp.initDataUnsafe) {
+      setUserData(WebApp.initDataUnsafe as UserData);
+     
+    }
+  }, []);
 
   const levelNames = [
     "Bronze", // From 0 to 4999 coins
@@ -69,35 +66,33 @@ console.log(userData?.photo_url);
     "Creator", // From 18,000,000,000, coins
   ];
 
-  const characterImages = [
-    a,
-    b, c, d, e, f, g, h, i, j, k,
-  ];
+  const characterImages = [a, b, c, d, e, f, g, h, i, j, k];
 
   const levelMinPoints = [
-    0,        // Bronze
-    5000,     // Silver
-    25000,    // Gold
-    100000,   // Platinum
-    1000000,  // Diamond
-    2000000,  // Epic
+    0, // Bronze
+    5000, // Silver
+    25000, // Gold
+    100000, // Platinum
+    1000000, // Diamond
+    2000000, // Epic
     10000000, // Legendary
     50000000, // Master
-    100000000,// GrandMaster
-    1000000000,// Lord
-    18000000000 // Creator
+    100000000, // GrandMaster
+    1000000000, // Lord
+    18000000000, // Creator
   ];
 
   const [levelIndex, setLevelIndex] = useState(0);
   const [points, setPoints] = useState(0);
-  const [clicks, setClicks] = useState<{ id: number, x: number, y: number }[]>([]);
+  const [clicks, setClicks] = useState<{ id: number; x: number; y: number }[]>(
+    []
+  );
   const pointsToAdd = 500000;
   const profitPerHour = 126420;
 
   const [dailyRewardTimeLeft, setDailyRewardTimeLeft] = useState("");
   const [dailyCipherTimeLeft, setDailyCipherTimeLeft] = useState("");
   const [dailyComboTimeLeft, setDailyComboTimeLeft] = useState("");
-
 
   const calculateTimeLeft = (targetHour: number) => {
     const now = new Date();
@@ -112,8 +107,8 @@ console.log(userData?.photo_url);
     const hours = Math.floor(diff / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
 
-    const paddedHours = hours.toString().padStart(2, '0');
-    const paddedMinutes = minutes.toString().padStart(2, '0');
+    const paddedHours = hours.toString().padStart(2, "0");
+    const paddedMinutes = minutes.toString().padStart(2, "0");
 
     return `${paddedHours}:${paddedMinutes}`;
   };
@@ -136,9 +131,11 @@ console.log(userData?.photo_url);
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left - rect.width / 2;
     const y = e.clientY - rect.top - rect.height / 2;
-    card.style.transform = `perspective(1000px) rotateX(${-y / 10}deg) rotateY(${x / 10}deg)`;
+    card.style.transform = `perspective(1000px) rotateX(${
+      -y / 10
+    }deg) rotateY(${x / 10}deg)`;
     setTimeout(() => {
-      card.style.transform = '';
+      card.style.transform = "";
     }, 100);
 
     setPoints(points + pointsToAdd);
@@ -146,7 +143,7 @@ console.log(userData?.photo_url);
   };
 
   const handleAnimationEnd = (id: number) => {
-    setClicks((prevClicks) => prevClicks.filter(click => click.id !== id));
+    setClicks((prevClicks) => prevClicks.filter((click) => click.id !== id));
   };
 
   const calculateProgress = () => {
@@ -155,18 +152,16 @@ console.log(userData?.photo_url);
     }
     const currentLevelMin = levelMinPoints[levelIndex];
     const nextLevelMin = levelMinPoints[levelIndex + 1];
-    const progress = ((points - currentLevelMin) / (nextLevelMin - currentLevelMin)) * 100;
+    const progress =
+      ((points - currentLevelMin) / (nextLevelMin - currentLevelMin)) * 100;
     return Math.min(progress, 100);
   };
-
- 
 
   useEffect(() => {
     const currentLevelMin = levelMinPoints[levelIndex];
     const nextLevelMin = levelMinPoints[levelIndex + 1];
     if (points >= nextLevelMin && levelIndex < levelNames.length - 1) {
       setLevelIndex(levelIndex + 1);
-      
     } else if (points < currentLevelMin && levelIndex > 0) {
       setLevelIndex(levelIndex - 1);
     }
@@ -182,14 +177,13 @@ console.log(userData?.photo_url);
   useEffect(() => {
     const pointsPerSecond = Math.floor(profitPerHour / 3600);
     const interval = setInterval(() => {
-      setPoints(prevPoints => prevPoints + pointsPerSecond);
+      setPoints((prevPoints) => prevPoints + pointsPerSecond);
     }, 1000);
     return () => clearInterval(interval);
   }, [profitPerHour]);
 
   return (
     <div className="bg-black flex justify-center">
-     
       <div className="w-full bg-black text-white h-screen font-bold flex flex-col max-w-xl">
         <div className="px-4 z-10">
           <div className="flex items-center space-x-2 pt-4">
@@ -199,8 +193,7 @@ console.log(userData?.photo_url);
             <div>
               <p className="text-sm">
                 {userData ? userData.first_name : "Guest"} (CEO)
-                
-                {userData? <img src={userData.photo_url}/> : null}
+                {userData ? <img src={userData.photo_url} alt="Binance" /> : null}
               </p>
             </div>
           </div>
