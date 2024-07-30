@@ -14,7 +14,7 @@ import {
   dailyCombo,
   dailyReward,
   dollarCoin,
-  hamsterCoin,
+  // hamsterCoin,
   a,
   b,
   c,
@@ -30,9 +30,9 @@ import {
 import Info from './icons/Info';
 import Settings from './icons/Settings';
 import Confetti from "react-confetti";
-import Mine from './icons/Mine';
-import Friends from './icons/Friends';
-import Coins from './icons/Coins';
+// import Mine from './icons/Mine';
+// import Friends from './icons/Friends';
+// import Coins from './icons/Coins';
 
 interface UserData {
   id: number;
