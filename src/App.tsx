@@ -199,6 +199,8 @@ console.log(userData?.photo_url);
             <div>
               <p className="text-sm">
                 {userData ? userData.first_name : "Guest"} (CEO)
+                
+                {userData? <img src={userData.photo_url}/> : null}
               </p>
             </div>
           </div>
