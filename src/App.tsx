@@ -29,7 +29,6 @@ import {
 } from "./images";
 import Info from './icons/Info';
 import Settings from './icons/Settings';
-import Confetti from "react-confetti";
 // import Mine from './icons/Mine';
 // import Friends from './icons/Friends';
 // import Coins from './icons/Coins';
@@ -41,6 +40,7 @@ interface UserData {
   username?: string;
   language_code: string;
   is_premium?: boolean;
+  photo_url: string;
 }
 
 const App: React.FC = () => {
@@ -50,7 +50,7 @@ console.log(WebApp.initDataUnsafe);
 useEffect(() => {
   if (WebApp.initDataUnsafe.user) {
     setUserData(WebApp.initDataUnsafe.user as UserData);
-console.log(userData);
+console.log(userData?.photo_url);
 
   }
 }, []);
@@ -97,7 +97,6 @@ console.log(userData);
   const [dailyRewardTimeLeft, setDailyRewardTimeLeft] = useState("");
   const [dailyCipherTimeLeft, setDailyCipherTimeLeft] = useState("");
   const [dailyComboTimeLeft, setDailyComboTimeLeft] = useState("");
- const [showConfetti, setShowConfetti] = useState(false); 
 
 
   const calculateTimeLeft = (targetHour: number) => {
@@ -160,17 +159,14 @@ console.log(userData);
     return Math.min(progress, 100);
   };
 
-   const triggerConfetti = () => {
-     setShowConfetti(true);
-     setTimeout(() => setShowConfetti(false), 5000);
-   };
+ 
 
   useEffect(() => {
     const currentLevelMin = levelMinPoints[levelIndex];
     const nextLevelMin = levelMinPoints[levelIndex + 1];
     if (points >= nextLevelMin && levelIndex < levelNames.length - 1) {
       setLevelIndex(levelIndex + 1);
-       triggerConfetti();
+      
     } else if (points < currentLevelMin && levelIndex > 0) {
       setLevelIndex(levelIndex - 1);
     }
@@ -193,7 +189,7 @@ console.log(userData);
 
   return (
     <div className="bg-black flex justify-center">
-      {showConfetti && <Confetti />}
+     
       <div className="w-full bg-black text-white h-screen font-bold flex flex-col max-w-xl">
         <div className="px-4 z-10">
           <div className="flex items-center space-x-2 pt-4">
