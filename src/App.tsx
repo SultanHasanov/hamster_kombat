@@ -30,24 +30,14 @@ import Settings from "./icons/Settings";
 // import Friends from './icons/Friends';
 // import Coins from './icons/Coins';
 
-interface UserData {
-  id: number;
-  is_bot?: boolean;
-  first_name: string;
-  last_name?: string;
-  username?: string;
-  language_code?: string;
-  is_premium?: boolean;
-  photo_url?: string;
-}
+
 
 const App: React.FC = () => {
-  const [userData, setUserData] = useState<UserData | null>(null);
-  console.log(userData);
+ 
 
   useEffect(() => {
     if (WebApp.initDataUnsafe) {
-      setUserData(WebApp.initDataUnsafe);
+      console.log(WebApp.initDataUnsafe);
     }
   }, []);
 
