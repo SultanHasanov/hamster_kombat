@@ -43,11 +43,11 @@ interface UserData {
 
 const App: React.FC = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
-  console.log(WebApp.initDataUnsafe);
+  console.log(userData);
 
   useEffect(() => {
     if (WebApp.initDataUnsafe) {
-      setUserData(WebApp.initDataUnsafe as UserData);
+      setUserData(WebApp.initDataUnsafe);
     }
   }, []);
 
@@ -191,10 +191,7 @@ const App: React.FC = () => {
             </div>
             <div>
               <p className="text-sm">
-                {userData ? userData.first_name : "Guest"} (CEO)
-                {userData ? (
-                  <img src={userData.photo_url} alt="Binance" />
-                ) : null}
+               
               </p>
             </div>
           </div>
