@@ -95,7 +95,6 @@ console.log(userData);
   const [dailyRewardTimeLeft, setDailyRewardTimeLeft] = useState("");
   const [dailyCipherTimeLeft, setDailyCipherTimeLeft] = useState("");
   const [dailyComboTimeLeft, setDailyComboTimeLeft] = useState("");
- const [showConfetti, setShowConfetti] = useState(false); 
 
 
   const calculateTimeLeft = (targetHour: number) => {
