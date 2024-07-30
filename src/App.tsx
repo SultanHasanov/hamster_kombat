@@ -2,8 +2,7 @@
 
 import WebApp from '@twa-dev/sdk'
 
-
-
+import { Telegram } from "@twa-dev/types";
 
 import React, { useState, useEffect } from 'react';
 import './App.css';
@@ -41,9 +40,16 @@ interface UserData {
   language_code: string;
   is_premium?: boolean;
 }
+declare global {
+  interface Window {
+    Telegram: Telegram;
+  }
+}
 
+window.Telegram.WebAppUser
 const App: React.FC = () => {
-const [userData, setUserData] = useState<UserData | null>(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
+ 
 
 useEffect(() => {
   if (WebApp.initDataUnsafe.user) {
