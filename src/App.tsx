@@ -8,9 +8,28 @@ import WebApp from '@twa-dev/sdk'
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import Hamster from './icons/Hamster';
-import { binanceLogo, dailyCipher, dailyCombo, dailyReward, dollarCoin, hamsterCoin, mainCharacter } from './images';
+import {
+  binanceLogo,
+  dailyCipher,
+  dailyCombo,
+  dailyReward,
+  dollarCoin,
+  hamsterCoin,
+  a,
+  b,
+  c,
+  d,
+  e,
+  f,
+  g,
+  h,
+  i,
+  j,
+  k,
+} from "./images";
 import Info from './icons/Info';
 import Settings from './icons/Settings';
+import Confetti from "react-confetti";
 import Mine from './icons/Mine';
 import Friends from './icons/Friends';
 import Coins from './icons/Coins';
@@ -37,16 +56,22 @@ console.log(userData);
 }, []);
 
   const levelNames = [
-    "Bronze",    // From 0 to 4999 coins
-    "Silver",    // From 5000 coins to 24,999 coins
-    "Gold",      // From 25,000 coins to 99,999 coins
-    "Platinum",  // From 100,000 coins to 999,999 coins
-    "Diamond",   // From 1,000,000 coins to 2,000,000 coins
-    "Epic",      // From 2,000,000 coins to 10,000,000 coins
+    "Bronze", // From 0 to 4999 coins
+    "Silver", // From 5000 coins to 24,999 coins
+    "Gold", // From 25,000 coins to 99,999 coins
+    "Platinum", // From 100,000 coins to 999,999 coins
+    "Diamond", // From 1,000,000 coins to 2,000,000 coins
+    "Epic", // From 2,000,000 coins to 10,000,000 coins
     "Legendary", // From 10,000,000 coins to 50,000,000 coins
-    "Master",    // From 50,000,000 coins to 100,000,000 coins
+    "Master", // From 50,000,000 coins to 100,000,000 coins
     "GrandMaster", // From 100,000,000 coins to 1,000,000,000 coins
-    "Lord"       // From 1,000,000,000 coins to ∞
+    "Lord", // From 1,000,000,000 coins to ∞
+    "Creator", // From 18,000,000,000, coins
+  ];
+
+  const characterImages = [
+    a,
+    b, c, d, e, f, g, h, i, j, k,
   ];
 
   const levelMinPoints = [
@@ -59,18 +84,21 @@ console.log(userData);
     10000000, // Legendary
     50000000, // Master
     100000000,// GrandMaster
-    1000000000// Lord
+    1000000000,// Lord
+    18000000000 // Creator
   ];
 
-  const [levelIndex, setLevelIndex] = useState(6);
-  const [points, setPoints] = useState(22749365);
+  const [levelIndex, setLevelIndex] = useState(0);
+  const [points, setPoints] = useState(0);
   const [clicks, setClicks] = useState<{ id: number, x: number, y: number }[]>([]);
-  const pointsToAdd = 10000000;
+  const pointsToAdd = 500000;
   const profitPerHour = 126420;
 
   const [dailyRewardTimeLeft, setDailyRewardTimeLeft] = useState("");
   const [dailyCipherTimeLeft, setDailyCipherTimeLeft] = useState("");
   const [dailyComboTimeLeft, setDailyComboTimeLeft] = useState("");
+ const [showConfetti, setShowConfetti] = useState(false); 
+
 
   const calculateTimeLeft = (targetHour: number) => {
     const now = new Date();
@@ -132,11 +160,17 @@ console.log(userData);
     return Math.min(progress, 100);
   };
 
+   const triggerConfetti = () => {
+     setShowConfetti(true);
+     setTimeout(() => setShowConfetti(false), 5000);
+   };
+
   useEffect(() => {
     const currentLevelMin = levelMinPoints[levelIndex];
     const nextLevelMin = levelMinPoints[levelIndex + 1];
     if (points >= nextLevelMin && levelIndex < levelNames.length - 1) {
       setLevelIndex(levelIndex + 1);
+       triggerConfetti();
     } else if (points < currentLevelMin && levelIndex > 0) {
       setLevelIndex(levelIndex - 1);
     }
@@ -159,6 +193,7 @@ console.log(userData);
 
   return (
     <div className="bg-black flex justify-center">
+      {showConfetti && <Confetti />}
       <div className="w-full bg-black text-white h-screen font-bold flex flex-col max-w-xl">
         <div className="px-4 z-10">
           <div className="flex items-center space-x-2 pt-4">
@@ -279,7 +314,7 @@ console.log(userData);
               >
                 <div className="w-full h-full rounded-full circle-inner">
                   <img
-                    src={mainCharacter}
+                    src={characterImages[levelIndex]}
                     alt="Main Character"
                     className="w-full h-full"
                   />
@@ -290,7 +325,7 @@ console.log(userData);
         </div>
       </div>
 
-      {/* Bottom fixed div */}
+      {/* Bottom fixed div
       <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] max-w-xl bg-[#272a2f] flex justify-around items-center z-50 rounded-3xl text-xs">
         <div className="text-center text-[#85827d] w-1/5 bg-[#1c1f24] m-1 p-2 rounded-2xl">
           <img src={binanceLogo} alt="Exchange" className="w-8 h-8 mx-auto" />
@@ -312,7 +347,7 @@ console.log(userData);
           <img src={hamsterCoin} alt="Airdrop" className="w-8 h-8 mx-auto" />
           <p className="mt-1">Airdrop</p>
         </div>
-      </div>
+      </div> */}
 
       {clicks.map((click) => (
         <div
